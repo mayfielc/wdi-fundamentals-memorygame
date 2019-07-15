@@ -1,61 +1,54 @@
 
-var cards = [{
-  rank: 'queen',
-  suit: 'hearts',
-  cardImage: 'images/queen-of-hearts.png'
-},
-{
-  rank:'queen',
-  suit: 'diamonds',
-  cardImage: 'images/queen-of-diamonds.png'
-},
-{
-  rank: 'king',
-  suit: 'hearts',
-  cardImage: 'images/king-of-hearts.png'
-},
-{
-  rank: 'king',
-  suit: 'diamonds',
-  cardImage: 'images/king-of-diamonds.png'
-}
-];
-var cardsInPlay = [];
+document.addEventListener("DOMContentLoaded", function(event) {
 
 
-var checkForMatch = function() {
-    if (cardsInPlay[0] === cardsInPlay[1]) {
-        alert('You found a match!');
+  var cards = [{
+    rank: 'queen',
+    suit: 'hearts',
+    cardImage: 'images/queen-of-hearts.png'
+  }, {
+    rank: 'queen',
+    suit: 'diamonds',
+    cardImage: 'images/queen-of-diamonds.png'
+  }, {
+    rank: 'king',
+    suit: "hearts",
+    cardImage: 'images/king-of-hearts.png'
+  }, {
+    rank: 'king',
+    suit: "diamonds",
+    cardImage: 'images/king-of-diamonds.png'
+  }];
+
+  var cardsInPlay = [];
+
+  var checkForMatch = function(cardId) {
+    this.setAttribute('src', cards[cardId].cardImage);
+    if (cardsInPlay.length === 2 && cardsInPlay[0] === cardsInPlay[1]) {
+      alert("You found a match!");
     } else {
-        alert('Sorry, try again.');
+      alert("Sorry, try again");
     }
-}
-var flipCard = function(cardId) {
-  console.log('User flipped ' + cards[cardId].rank);
-  console.log('User flipped ' + cards[cardId].cardImage);
-  console.log('User flipped ' + cards[cardId].suit)
-  cardsInPlay.push(cards[cardId].rank);
-  if (cardsInPlay.length === 2) {
-    checkForMatch();
   }
-}
 
-flipCard(0);
-flipCard(2);
+  var flipCard = function() {
+    var cardId = this.getAttribute('data-id');
+    checkForMatch.bind(this)(cardId);
+    console.log("User flipped " + cards[cardId].rank);
+    cardsInPlay.push(cards.rank);
+    console.log(cards[cardId].cardImage);
+    console.log(cards[cardId].suit);
+  }
 
-// var cardOne = cards[0];
-// cardsInPlay.push('cardOne');
-// console.log("User flipped queen");
-//
-// var cardTwo = cards[1];
-// cardsInPlay.push('cardTwo');
-// console.log("User flipped king");
+  var createBoard = function() {
+    for (var i = 0; i < cards.length; i++) {
+      var cardElement = document.createElement('img');
+      cardElement.setAttribute('src', 'images/back.png');
+      cardElement.setAttribute('data-id', i);
+      cardElement.addEventListener('click', flipCard);
+      document.getElementById('game-board').appendChild(cardElement);
+    }
+  }
 
-
-
-
-
-// if (cardsInPlay.length === 2) {
-//    console.log("you have selected two cards");
-// if (cardsInPlay[0] === cardsInPlay[1]) alert("You found a match!");
-// else alert("Sorry, try again"); }
+  createBoard();
+});
